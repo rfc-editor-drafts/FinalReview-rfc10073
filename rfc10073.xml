@@ -161,7 +161,7 @@ In addition, the following terminology is used throughout this specification:</t
         <name>Notations</name>
         <t>The algorithm descriptions use Python-like syntax. The following symbols deserve special mention:</t>
         <dl spacing="normal" newline="true">
-            <dt><tt>||</tt></dt><dd>represents concatenation of two-byte arrays.</dd>
+            <dt><tt>||</tt></dt><dd>represents concatenation of two byte-arrays.</dd>
             <dt><tt>[:]</tt></dt><dd>represents byte array slicing.</dd>
             <dt><tt>(a, b)</tt></dt><dd>represents a pair of values <tt>a</tt> and <tt>b</tt>. Typically, this indicates that a function returns multiple values; the exact conveyance mechanism (tuple, struct, output parameters, etc.) is left to the implementer.</dd>
             <dt><tt>(a, _)</tt></dt><dd>represents a pair of values where one (the second one in this case) is ignored.</dd>
@@ -345,7 +345,7 @@ Implicit inputs mapped from <OID>:
           algorithm. Additionally, the composite label is passed
           into the underlying ML-DSA primitive as the ctx.
           Signature Label values are defined in the
-          "Signature Label Values" section below.
+          "Algorithm Identifiers and Parameters" section below.
 
   PH      The function used to pre-hash M.
 
@@ -438,7 +438,7 @@ Implicit inputs mapped from <OID>:
           algorithm. Additionally, the composite label is passed
           into the underlying ML-DSA primitive as the ctx.
           Signature Label values are defined in the
-          "Signature Label Values" section below.
+          "Algorithm Identifiers and Parameters" section below.
 
   PH      The function used to pre-hash M.
 
@@ -1230,7 +1230,7 @@ sa-MLDSA44-ECDSA-P256-SHA256 SIGNATURE-ALGORITHM ::=
     </section>
     <section anchor="sec-asn1-module">
       <name>ASN.1 Module</name>
-
+        <t>This section includes the ASN.1 module <xref target="X.680"/> for Composite ML-KEM and uses the Basic Encoding Rules (BER) and the Distinguished Encoding Rules (DER) <xref target="X.690"/>. This module imports objects from <xref target="RFC5912"/> and <xref target="RFC9629"/>.</t>
       <sourcecode type="asn.1"><![CDATA[
 <CODE STARTS>
 
@@ -1517,7 +1517,8 @@ sa-MLDSA87-ECDSA-P521-SHA512 SIGNATURE-ALGORITHM ::=
        pk-MLDSA87-ECDSA-P521-SHA512 }
 
 
-SignatureAlgorithmSet SIGNATURE-ALGORITHM ::= {
+SignatureAlgs SIGNATURE-ALGORITHM ::= {
+  -- This expands SignatureAlgorithms from [RFC 5912]
   sa-MLDSA44-RSA2048-PSS-SHA256 |
   sa-MLDSA44-RSA2048-PKCS15-SHA256 |
   sa-MLDSA44-Ed25519-SHA512 |
@@ -1537,6 +1538,29 @@ SignatureAlgorithmSet SIGNATURE-ALGORITHM ::= {
   sa-MLDSA87-RSA4096-PSS-SHA512 |
   sa-MLDSA87-ECDSA-P521-SHA512,
   ... }
+
+PublicKeys PUBLIC-KEY ::= {
+  -- This expands PublicKeyAlgorithms from [RFC 5912]
+  pk-MLDSA44-RSA2048-PSS-SHA256 |
+  pk-MLDSA44-RSA2048-PKCS15-SHA256 |
+  pk-MLDSA44-Ed25519-SHA512 |
+  pk-MLDSA44-ECDSA-P256-SHA256 |
+  pk-MLDSA65-RSA3072-PSS-SHA512 |
+  pk-MLDSA65-RSA3072-PKCS15-SHA512 |
+  pk-MLDSA65-RSA4096-PSS-SHA512 |
+  pk-MLDSA65-RSA4096-PKCS15-SHA512 |
+  pk-MLDSA65-ECDSA-P256-SHA512 |
+  pk-MLDSA65-ECDSA-P384-SHA512 |
+  pk-MLDSA65-ECDSA-brainpoolP256r1-SHA512 |
+  pk-MLDSA65-Ed25519-SHA512 |
+  pk-MLDSA87-ECDSA-P384-SHA512 |
+  pk-MLDSA87-ECDSA-brainpoolP384r1-SHA512 |
+  pk-MLDSA87-Ed448-SHAKE256 |
+  pk-MLDSA87-RSA3072-PSS-SHA512 |
+  pk-MLDSA87-RSA4096-PSS-SHA512 |
+  pk-MLDSA87-ECDSA-P521-SHA512,
+  ...
+}
 
 END
 
@@ -1890,7 +1914,7 @@ Implicit inputs mapped from <OID>:
           algorithm. Additionally, the composite label is passed
           into the underlying ML-DSA primitive as the ctx.
           Signature Label values are defined in the
-          "Signature Label Values" section below.
+          "Algorithm Identifiers and Parameters" section below.
 
 Process:
 
@@ -1921,6 +1945,7 @@ Process:
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5639.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5652.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5758.xml"/>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5912.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5915.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5958.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6090.xml"/>
@@ -1928,8 +1953,20 @@ Process:
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8017.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8032.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8410.xml"/>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9629.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9881.xml"/>
-        <reference anchor="X.690" target="https://www.itu.int/rec/T-REC-X.690">
+        <reference anchor="X.680" target="https://www.itu.int/rec/T-REC-X.680">
+          <front>
+            <title>Information technology - Abstract Syntax Notation One (ASN.1): Specification of basic notation</title>
+            <author>
+              <organization>ITU-T</organization>
+            </author>
+            <date year="2021" month="February"/>
+          </front>
+          <seriesInfo name="ITU-T Recommendation" value="X.680"/>
+          <seriesInfo name="ISO/IEC" value="8824-1:2021"/>
+        </reference>
+		<reference anchor="X.690" target="https://www.itu.int/rec/T-REC-X.690">
           <front>
             <title>Information technology - ASN.1 encoding rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)</title>
             <author>
@@ -2110,7 +2147,7 @@ Process:
           <t>When the underlying RSA or EC value is itself DER encoded, integer values could occasionally be shorter than expected due to leading zeros being dropped from the encoding.</t>
         </li>
       </ul>
-      <t>Size values marked with an asterisk (*) in the table below are not fixed but are maximum possible values for the composite key or ciphertext. Implementations should be careful when performing length checking based on such values.</t>
+      <t>Size values marked with an asterisk (*) in the table below are not fixed but are maximum possible values for the composite key or signature. Implementations should be careful when performing length checking based on such values.</t>
       <t>Non-hybrid ML-DSA is included for reference.</t>
 
 <table anchor="tab-size-values">
