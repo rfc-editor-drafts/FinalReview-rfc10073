@@ -1234,7 +1234,7 @@ sa-MLDSA44-ECDSA-P256-SHA256 SIGNATURE-ALGORITHM ::=
     </section>
     <section anchor="sec-asn1-module">
       <name>ASN.1 Module</name>
-        <t>This section includes the ASN.1 module <xref target="X.680"/> for Composite ML-KEM and uses the Basic Encoding Rules (BER) and the Distinguished Encoding Rules (DER) <xref target="X.690"/>. This module imports objects from <xref target="RFC5912"/>.</t>
+        <t>This section includes the ASN.1 module <xref target="X.680"/> for Composite ML-DSA and uses the Basic Encoding Rules (BER) and the Distinguished Encoding Rules (DER) <xref target="X.690"/>. This module imports objects from <xref target="RFC5912"/>.</t>
       <sourcecode type="asn.1"><![CDATA[
 <CODE STARTS>
 
